@@ -1,0 +1,28 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+
+# SQLite database
+*.db
+*.db-shm
+*.db-wal
+
+# Uploads
+uploads/
+
+# IDE
+.vs/
+.vscode/
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db

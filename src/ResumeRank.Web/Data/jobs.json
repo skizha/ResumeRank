@@ -1,0 +1,102 @@
+[
+  {
+    "id": "registered-nurse",
+    "title": "Registered Nurse",
+    "department": "Healthcare",
+    "description": "We are seeking a compassionate and skilled Registered Nurse to join our patient care team. In this role, you will provide direct nursing care to patients across various departments, monitor patient conditions, administer medications, and collaborate with physicians and healthcare professionals to develop and implement patient care plans.\n\nResponsibilities:\n- Assess patient health conditions including vital signs, medical history, and symptoms\n- Develop and implement individualized care plans in collaboration with the healthcare team\n- Administer medications, injections, and IV therapies following physician orders\n- Monitor and document patient progress, reporting changes to attending physicians\n- Educate patients and families on disease management, medications, and post-discharge care\n- Maintain accurate and detailed medical records in the electronic health system\n- Respond to medical emergencies and provide life-saving interventions as needed\n- Ensure compliance with infection control protocols and safety standards\n- Coordinate with specialists, pharmacists, and support staff for holistic patient care\n- Participate in quality improvement initiatives and continuing education programs",
+    "requiredSkills": ["Patient Assessment", "Medication Administration", "Electronic Health Records (EHR)", "BLS/ACLS Certification", "Care Plan Development", "IV Therapy", "Patient Education", "Clinical Documentation"],
+    "preferredSkills": ["ICU Experience", "Telemetry Monitoring", "Wound Care", "Charge Nurse Experience", "Epic/Cerner Systems"],
+    "experienceLevel": "Mid",
+    "location": "On-site"
+  },
+  {
+    "id": "marketing-manager",
+    "title": "Marketing Manager",
+    "department": "Marketing",
+    "description": "We are looking for a strategic and creative Marketing Manager to lead our brand awareness and demand generation efforts. You will develop and execute multi-channel marketing campaigns, manage the marketing budget, and work closely with sales, product, and creative teams to drive growth and customer engagement.\n\nResponsibilities:\n- Develop comprehensive marketing strategies aligned with business objectives and revenue targets\n- Plan, execute, and measure multi-channel campaigns across digital, print, events, and social media\n- Manage the marketing budget, allocating resources effectively across channels and initiatives\n- Oversee brand messaging, positioning, and visual identity across all touchpoints\n- Analyze campaign performance using analytics tools and provide actionable insights to leadership\n- Lead and mentor a team of marketing coordinators and specialists\n- Collaborate with the sales team to develop lead generation programs and sales enablement materials\n- Manage relationships with external agencies, vendors, and media partners\n- Conduct market research and competitive analysis to identify trends and opportunities\n- Drive content strategy including blog posts, whitepapers, case studies, and email marketing",
+    "requiredSkills": ["Campaign Management", "Digital Marketing", "Brand Strategy", "Budget Management", "Google Analytics", "Marketing Automation", "Content Strategy", "Team Leadership"],
+    "preferredSkills": ["HubSpot", "SEO/SEM", "Paid Social Advertising", "Account-Based Marketing", "Salesforce"],
+    "experienceLevel": "Senior",
+    "location": "Hybrid"
+  },
+  {
+    "id": "financial-analyst",
+    "title": "Financial Analyst",
+    "department": "Finance",
+    "description": "We are hiring a detail-oriented Financial Analyst to support strategic decision-making through financial modeling, forecasting, and data-driven analysis. You will work closely with senior leadership to evaluate business performance, identify trends, and provide recommendations that drive profitability and operational efficiency.\n\nResponsibilities:\n- Build and maintain financial models to forecast revenue, expenses, and cash flow\n- Prepare monthly, quarterly, and annual financial reports for leadership and stakeholders\n- Analyze variances between actual results and budget/forecast, identifying root causes\n- Support the annual budgeting and long-range planning processes\n- Evaluate capital expenditure proposals and investment opportunities with ROI analysis\n- Monitor key performance indicators (KPIs) and develop dashboards for executive visibility\n- Conduct scenario analysis and sensitivity modeling to assess business risks\n- Collaborate with department heads to understand cost drivers and identify savings opportunities\n- Prepare presentations and memos for board meetings and investor communications\n- Ensure compliance with financial reporting standards and internal controls",
+    "requiredSkills": ["Financial Modeling", "Excel (Advanced)", "Budgeting & Forecasting", "Variance Analysis", "Financial Reporting", "Data Analysis", "GAAP Knowledge", "PowerPoint"],
+    "preferredSkills": ["SQL", "Power BI/Tableau", "SAP/Oracle ERP", "CFA Progress", "Python for Finance"],
+    "experienceLevel": "Mid",
+    "location": "Hybrid"
+  },
+  {
+    "id": "software-engineer",
+    "title": "Software Engineer",
+    "department": "Technology",
+    "description": "We are looking for a talented Software Engineer to join our development team and help build scalable, high-quality applications. You will be involved in the full software development lifecycle from requirements gathering to deployment, working in an agile environment with a focus on clean code and collaborative problem-solving.\n\nResponsibilities:\n- Design, develop, test, and deploy software applications using modern frameworks and languages\n- Write clean, maintainable, and well-documented code following established coding standards\n- Participate in code reviews, providing constructive feedback to team members\n- Collaborate with product managers and designers to translate requirements into technical solutions\n- Troubleshoot and debug production issues, performing root cause analysis\n- Design and optimize database schemas and write efficient queries\n- Build and consume RESTful APIs and integrate with third-party services\n- Write unit tests and integration tests to ensure code reliability\n- Participate in agile ceremonies including sprint planning, daily standups, and retrospectives\n- Stay current with emerging technologies and propose improvements to the tech stack",
+    "requiredSkills": ["C#", ".NET", "SQL", "REST APIs", "Git", "Unit Testing", "Agile/Scrum", "Object-Oriented Design"],
+    "preferredSkills": ["Azure", "Docker", "CI/CD Pipelines", "Microservices", "TypeScript"],
+    "experienceLevel": "Mid",
+    "location": "Remote"
+  },
+  {
+    "id": "human-resources-generalist",
+    "title": "Human Resources Generalist",
+    "department": "Human Resources",
+    "description": "We are seeking an experienced HR Generalist to manage day-to-day human resources operations and support our growing workforce. You will be a trusted advisor to employees and managers on HR policies, benefits, employee relations, and talent development, ensuring a positive and compliant workplace.\n\nResponsibilities:\n- Administer employee lifecycle processes including onboarding, transfers, and offboarding\n- Serve as the primary point of contact for employee inquiries on policies, benefits, and procedures\n- Manage employee relations issues including investigations, conflict resolution, and disciplinary actions\n- Support the recruitment process by coordinating interviews, extending offers, and conducting background checks\n- Administer benefits enrollment, changes, and annual open enrollment programs\n- Maintain accurate employee records in the HRIS and ensure data integrity\n- Ensure compliance with federal, state, and local employment laws and regulations\n- Develop and update HR policies, procedures, and the employee handbook\n- Coordinate training and development programs, including new hire orientation\n- Generate HR reports and metrics on turnover, headcount, diversity, and engagement",
+    "requiredSkills": ["Employee Relations", "HRIS Management", "Benefits Administration", "Employment Law", "Recruitment", "Onboarding", "Policy Development", "Conflict Resolution"],
+    "preferredSkills": ["Workday/BambooHR", "SHRM-CP Certification", "Payroll Processing", "Performance Management Systems", "DEI Initiatives"],
+    "experienceLevel": "Mid",
+    "location": "On-site"
+  },
+  {
+    "id": "project-manager",
+    "title": "Project Manager",
+    "department": "Operations",
+    "description": "We are looking for an organized and proactive Project Manager to lead cross-functional projects from initiation through delivery. You will be responsible for defining project scope, managing timelines and budgets, mitigating risks, and ensuring stakeholder alignment to deliver results on time and within budget.\n\nResponsibilities:\n- Define project scope, objectives, deliverables, and success criteria with stakeholders\n- Develop detailed project plans including timelines, milestones, resource allocation, and budgets\n- Lead cross-functional project teams, coordinating work across departments and external vendors\n- Track project progress against schedule and budget, providing regular status updates to leadership\n- Identify, assess, and mitigate project risks and issues, escalating as appropriate\n- Facilitate project meetings, workshops, and decision-making sessions\n- Manage scope changes through formal change control processes\n- Ensure project documentation is complete, current, and accessible\n- Drive post-project reviews and lessons learned to improve future execution\n- Manage multiple concurrent projects with competing priorities and deadlines",
+    "requiredSkills": ["Project Planning", "Stakeholder Management", "Risk Management", "Budget Management", "Agile & Waterfall Methodologies", "MS Project/Smartsheet", "Team Leadership", "Communication"],
+    "preferredSkills": ["PMP Certification", "JIRA/Confluence", "Six Sigma", "Vendor Management", "Change Management"],
+    "experienceLevel": "Senior",
+    "location": "Hybrid"
+  },
+  {
+    "id": "sales-representative",
+    "title": "Sales Representative",
+    "department": "Sales",
+    "description": "We are hiring a driven and personable Sales Representative to expand our customer base and grow revenue. You will be responsible for the full sales cycle from prospecting to closing, building lasting client relationships, and consistently meeting or exceeding sales targets in a fast-paced environment.\n\nResponsibilities:\n- Prospect and qualify new leads through cold calling, email outreach, networking, and referrals\n- Conduct discovery calls and product demonstrations tailored to client needs\n- Develop and present proposals, quotes, and contracts to prospective customers\n- Negotiate pricing and terms to close deals while maintaining healthy margins\n- Build and maintain a robust sales pipeline using CRM tools\n- Achieve or exceed monthly, quarterly, and annual revenue targets\n- Develop deep relationships with key accounts to drive renewals and upsell opportunities\n- Collaborate with marketing to provide feedback on lead quality and campaign effectiveness\n- Attend industry events, trade shows, and conferences to generate new business\n- Prepare accurate sales forecasts and activity reports for management",
+    "requiredSkills": ["Prospecting", "Consultative Selling", "CRM (Salesforce)", "Negotiation", "Pipeline Management", "Presentation Skills", "Cold Calling", "Closing Techniques"],
+    "preferredSkills": ["B2B SaaS Sales", "Account-Based Selling", "LinkedIn Sales Navigator", "Territory Management", "Contract Negotiation"],
+    "experienceLevel": "Mid",
+    "location": "On-site"
+  },
+  {
+    "id": "graphic-designer",
+    "title": "Graphic Designer",
+    "department": "Creative",
+    "description": "We are looking for a talented Graphic Designer with a strong portfolio to create compelling visual content across digital and print channels. You will bring brand stories to life through design, working closely with marketing, product, and leadership teams to produce materials that engage audiences and drive business results.\n\nResponsibilities:\n- Design marketing materials including brochures, flyers, social media graphics, and presentations\n- Create and maintain brand identity assets including logos, style guides, and templates\n- Design digital assets for websites, email campaigns, landing pages, and online advertisements\n- Produce layouts for print materials ensuring press-ready file preparation\n- Collaborate with copywriters and marketing managers to develop creative concepts\n- Present design concepts to stakeholders and iterate based on feedback\n- Manage multiple design projects simultaneously while meeting deadlines\n- Ensure all designs are consistent with brand guidelines and visual standards\n- Stay current with design trends, tools, and best practices\n- Organize and maintain the digital asset library for team accessibility",
+    "requiredSkills": ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Typography", "Layout Design", "Brand Identity", "Color Theory", "Print Production", "Digital Design", "Visual Communication"],
+    "preferredSkills": ["Figma", "Motion Graphics (After Effects)", "Video Editing (Premiere Pro)", "UI Design", "Photography"],
+    "experienceLevel": "Mid",
+    "location": "Hybrid"
+  },
+  {
+    "id": "data-analyst",
+    "title": "Data Analyst",
+    "department": "Business Intelligence",
+    "description": "We are seeking a curious and analytical Data Analyst to turn raw data into meaningful insights that drive business decisions. You will design reports, build dashboards, and perform deep-dive analyses to help teams across the organization understand performance, identify opportunities, and measure the impact of their initiatives.\n\nResponsibilities:\n- Gather, clean, and validate data from multiple sources to ensure accuracy and completeness\n- Design and build interactive dashboards and reports for stakeholders across the organization\n- Perform exploratory data analysis to identify trends, patterns, and anomalies\n- Translate business questions into analytical frameworks and deliver actionable recommendations\n- Develop and maintain SQL queries, stored procedures, and data pipelines\n- Collaborate with engineering to define data requirements and improve data collection\n- Create and document data definitions, metrics, and calculation methodologies\n- Support A/B testing and experimentation programs with statistical analysis\n- Present findings to technical and non-technical audiences through clear visualizations\n- Automate recurring reports to reduce manual effort and improve timeliness",
+    "requiredSkills": ["SQL", "Excel (Advanced)", "Data Visualization (Power BI/Tableau)", "Statistical Analysis", "Data Cleaning", "Report Development", "Analytical Thinking", "Communication"],
+    "preferredSkills": ["Python/R", "ETL Processes", "Google Analytics", "dbt", "A/B Testing"],
+    "experienceLevel": "Mid",
+    "location": "Remote"
+  },
+  {
+    "id": "operations-coordinator",
+    "title": "Operations Coordinator",
+    "department": "Operations",
+    "description": "We are hiring a detail-oriented Operations Coordinator to support the smooth running of daily business operations. You will coordinate logistics, manage vendor relationships, track operational metrics, and help implement process improvements that increase efficiency across the organization.\n\nResponsibilities:\n- Coordinate day-to-day operational activities including scheduling, logistics, and resource allocation\n- Manage vendor and supplier relationships, including purchase orders, invoicing, and contract renewals\n- Track and report on operational KPIs, flagging issues and recommending improvements\n- Maintain inventory levels and coordinate procurement of office supplies and equipment\n- Support facilities management including space planning, maintenance requests, and safety compliance\n- Document and improve standard operating procedures (SOPs) across departments\n- Coordinate internal events, meetings, and travel arrangements for leadership\n- Process expense reports and ensure compliance with company policies\n- Assist with onboarding logistics for new employees including workspace setup and equipment\n- Serve as a liaison between departments to ensure smooth cross-functional operations",
+    "requiredSkills": ["Operations Management", "Vendor Management", "Microsoft Office Suite", "Scheduling & Logistics", "Process Improvement", "Inventory Management", "Attention to Detail", "Organizational Skills"],
+    "preferredSkills": ["ERP Systems (SAP/NetSuite)", "Lean/Six Sigma", "Budget Tracking", "Facilities Management", "Event Coordination"],
+    "experienceLevel": "Entry",
+    "location": "On-site"
+  }
+]

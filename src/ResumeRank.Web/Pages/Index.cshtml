@@ -1,0 +1,40 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Jobs";
+}
+
+<h1>Open Positions</h1>
+<p class="text-muted">Select a job to view details, upload resumes, and rank candidates.</p>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Title</th>
+                <th>Department</th>
+                <th>Experience</th>
+                <th>Location</th>
+                <th>Resumes</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var job in Model.Jobs)
+            {
+                <tr>
+                    <td><strong>@job.Title</strong></td>
+                    <td>@job.Department</td>
+                    <td>@job.ExperienceLevel</td>
+                    <td>@job.Location</td>
+                    <td>
+                        <span class="badge bg-secondary">@Model.ResumeCounts[job.Id]</span>
+                    </td>
+                    <td>
+                        <a asp-page="/Jobs/Detail" asp-route-id="@job.Id" class="btn btn-sm btn-outline-primary">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
