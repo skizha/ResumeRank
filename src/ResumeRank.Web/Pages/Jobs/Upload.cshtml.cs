@@ -75,7 +75,7 @@ public class UploadModel : PageModel
                 await file.CopyToAsync(stream);
             }
 
-            var parsed = await _parserAgent.ParseAsync(file.FileName);
+            var parsed = await _parserAgent.ParseAsync(filePath);
 
             var resume = new Resume
             {

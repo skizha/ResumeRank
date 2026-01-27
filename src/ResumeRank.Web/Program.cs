@@ -11,8 +11,22 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IJobService, JobService>();
-builder.Services.AddScoped<IResumeParserAgent, StubResumeParserAgent>();
-builder.Services.AddScoped<IRankingAgent, StubRankingAgent>();
+
+builder.Services.AddHttpClient<IResumeParserAgent, HttpResumeParserAgent>(client =>
+{
+    var baseUrl = builder.Configuration["AgentServices:ResumeParserUrl"]
+        ?? "http://localhost:5100";
+    client.BaseAddress = new Uri(baseUrl);
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
+builder.Services.AddHttpClient<IRankingAgent, HttpRankingAgent>(client =>
+{
+    var baseUrl = builder.Configuration["AgentServices:RankingAgentUrl"]
+        ?? "http://localhost:5101";
+    client.BaseAddress = new Uri(baseUrl);
+    client.Timeout = TimeSpan.FromSeconds(120);
+});
 
 builder.WebHost.ConfigureKestrel(options =>
 {
