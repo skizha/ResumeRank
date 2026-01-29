@@ -8,6 +8,7 @@ A resume ranking application that uses AI agents to parse and score resumes agai
 - **Job Matching**: Define job descriptions with required and preferred skills
 - **AI-Powered Ranking**: Score and rank candidates based on job requirements using LLM
 - **Web Interface**: User-friendly Razor Pages frontend for managing jobs and resumes
+- **AWS Integration**: Deploy agents to AWS Lambda with S3 storage and API Gateway
 
 ## Architecture
 
@@ -18,6 +19,8 @@ The application consists of three components:
 | Web App | .NET 8 ASP.NET Core | 5016 | Razor Pages frontend |
 | Resume Parser Agent | Python FastAPI | 5100 | Extracts structured data from resumes |
 | Ranking Agent | Python FastAPI | 5101 | Scores resumes against job criteria |
+
+### Local Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -44,11 +47,55 @@ The application consists of three components:
 └───────────────────────┘   └───────────────────────┘
 ```
 
+### AWS Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                           Browser                               │
+└─────────────────────────────┬───────────────────────────────────┘
+                              │ HTTP
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                .NET Web Application (Local)                     │
+│                   (ASP.NET Core - Port 5016)                    │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
+│  │ Razor Pages │  │  Services   │  │    SQLite Database      │  │
+│  └─────────────┘  └──────┬──────┘  └─────────────────────────┘  │
+└──────────────────────────┼──────────────────────────────────────┘
+                           │ HTTPS
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      AWS API Gateway                            │
+│              POST /parse          POST /rank                    │
+└─────────────┬───────────────────────────────┬───────────────────┘
+              │                               │
+              ▼                               ▼
+┌───────────────────────┐       ┌───────────────────────┐
+│  Resume Parser Lambda │       │    Ranking Lambda     │
+│  ┌─────────────────┐  │       │  ┌─────────────────┐  │
+│  │ PDF/DOCX Parser │  │       │  │  AWS Bedrock    │  │
+│  │ + AWS Bedrock   │  │       │  │  (Claude)       │  │
+│  └────────┬────────┘  │       │  └─────────────────┘  │
+└───────────┼───────────┘       └───────────────────────┘
+            │
+            ▼
+┌───────────────────────┐
+│      S3 Bucket        │
+│  (Resume Storage)     │
+└───────────────────────┘
+```
+
 ## Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - [Python 3.10+](https://www.python.org/downloads/)
-- LLM API Key (e.g., Anthropic, OpenAI, or local LLM endpoint)
+- LLM API Key (Anthropic for local mode)
+
+### Additional for AWS Deployment
+
+- [AWS CLI](https://aws.amazon.com/cli/) configured with appropriate credentials
+- [Terraform](https://www.terraform.io/downloads) >= 1.0
+- AWS Bedrock Claude model access enabled in your AWS account
 
 ## Setup
 
@@ -67,14 +114,14 @@ pip install -r src/agents/requirements.txt
 
 ### 3. Configure environment
 
-Set your LLM API key (example using Anthropic):
+Set your LLM API key (for local mode):
 
 ```bash
 # Windows
-set LLM_API_KEY=your-api-key-here
+set ANTHROPIC_API_KEY=your-api-key-here
 
 # Linux/Mac
-export LLM_API_KEY=your-api-key-here
+export ANTHROPIC_API_KEY=your-api-key-here
 ```
 
 ### 4. Build the .NET application
@@ -83,7 +130,7 @@ export LLM_API_KEY=your-api-key-here
 dotnet build
 ```
 
-## Running the Application
+## Running Locally
 
 You need to run all three components:
 
@@ -109,58 +156,138 @@ dotnet run --project src/ResumeRank.Web
 
 Open http://localhost:5016 in your browser.
 
-## Project Structure
+## AWS Deployment
 
-```
-ResumeRankV1/
-├── src/
-│   ├── ResumeRank.Web/           # .NET 8 ASP.NET Core Razor Pages
-│   │   ├── Pages/                # Razor Pages
-│   │   ├── Models/               # Data models
-│   │   ├── Services/             # Business logic and HTTP clients
-│   │   └── Data/                 # EF Core DbContext
-│   └── agents/                   # Python AI agents
-│       ├── resume_parser/        # Resume parsing agent
-│       ├── ranking_agent/        # Resume ranking agent
-│       └── shared/               # Shared configuration
-├── tests/
-│   ├── ResumeRank.Web.Tests/     # xUnit tests
-│   └── agents/                   # pytest tests
-└── ResumeRank.sln                # .NET solution file
+### 1. Deploy Infrastructure and Lambda Functions
+
+```powershell
+# Package and deploy
+.\scripts\deploy-aws.ps1
+
+# Or with custom options
+.\scripts\deploy-aws.ps1 -Environment prod -Region us-west-2 -AutoApprove
 ```
 
-## Configuration
+### 2. Configure the .NET Application
 
-### Web Application
-
-Edit `src/ResumeRank.Web/appsettings.json`:
+Update `src/ResumeRank.Web/appsettings.json` or create `appsettings.Production.json`:
 
 ```json
 {
-  "AgentServices": {
-    "ResumeParserUrl": "http://localhost:5100",
-    "RankingAgentUrl": "http://localhost:5101"
+  "AgentMode": "AWS",
+  "AWS": {
+    "Region": "us-east-1",
+    "ApiGatewayUrl": "https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/dev",
+    "S3BucketName": "resumerank-resumes-dev-YOUR_ACCOUNT_ID"
   }
 }
 ```
 
-### Python Agents
+The deployment script will output the correct values for `ApiGatewayUrl` and `S3BucketName`.
 
-Environment variables:
-- `LLM_API_KEY` - Your LLM API key (required for AI features)
-- `RESUME_PARSER_PORT` - Resume parser port (default: 5100)
-- `RANKING_AGENT_PORT` - Ranking agent port (default: 5101)
+### 3. Run with AWS Mode
+
+```bash
+# Using environment variable
+set AgentMode=AWS
+dotnet run --project src/ResumeRank.Web
+
+# Or use Production environment
+dotnet run --project src/ResumeRank.Web --environment Production
+```
+
+### 4. Tear Down AWS Resources
+
+```powershell
+.\scripts\destroy-aws.ps1
+
+# Force destroy including S3 contents
+.\scripts\destroy-aws.ps1 -Force -AutoApprove
+```
+
+## Configuration Modes
+
+The application supports two modes configured via `AgentMode` in appsettings:
+
+| Mode | Description | File Storage | Agent Endpoints |
+|------|-------------|--------------|-----------------|
+| `Local` (default) | Local development | Local filesystem | FastAPI on localhost |
+| `AWS` | Cloud deployment | Amazon S3 | API Gateway + Lambda |
+
+### Local Mode Configuration
+
+```json
+{
+  "AgentMode": "Local",
+  "AgentServices": {
+    "ResumeParserUrl": "http://localhost:5100",
+    "RankingAgentUrl": "http://localhost:5101"
+  },
+  "FileStorage": {
+    "UploadPath": "uploads"
+  }
+}
+```
+
+### AWS Mode Configuration
+
+```json
+{
+  "AgentMode": "AWS",
+  "AWS": {
+    "Region": "us-east-1",
+    "ApiGatewayUrl": "https://xxx.execute-api.us-east-1.amazonaws.com/dev",
+    "S3BucketName": "resumerank-resumes-dev-123456789012"
+  }
+}
+```
+
+## Project Structure
+
+```
+ResumeRankV1/
+├── infrastructure/              # Terraform AWS configs
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   ├── s3.tf
+│   ├── lambda.tf
+│   ├── api_gateway.tf
+│   └── iam.tf
+├── scripts/                     # Deployment scripts
+│   ├── deploy-aws.ps1
+│   ├── destroy-aws.ps1
+│   └── package-lambda.ps1
+├── src/
+│   ├── ResumeRank.Web/          # .NET 8 ASP.NET Core Razor Pages
+│   │   ├── Pages/               # Razor Pages
+│   │   ├── Models/              # Data models
+│   │   ├── Services/            # Business logic and HTTP clients
+│   │   └── Data/                # EF Core DbContext
+│   └── agents/
+│       ├── resume_parser/       # Local FastAPI resume parser
+│       ├── ranking_agent/       # Local FastAPI ranking agent
+│       ├── shared/              # Shared configuration
+│       └── aws_lambda/          # AWS Lambda handlers
+│           ├── resume_parser/   # Lambda resume parser
+│           ├── ranking_agent/   # Lambda ranking agent
+│           └── shared/          # Shared AWS utilities
+├── tests/
+│   ├── ResumeRank.Web.Tests/    # xUnit tests
+│   └── agents/                  # pytest tests
+└── ResumeRank.sln               # .NET solution file
+```
 
 ## API Endpoints
 
-### Resume Parser Agent (port 5100)
+### Resume Parser Agent (port 5100 / /parse)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/parse` | Parse a resume file |
 | GET | `/health` | Health check |
 
-### Ranking Agent (port 5101)
+### Ranking Agent (port 5101 / /rank)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -180,6 +307,34 @@ dotnet test
 ```bash
 pytest tests/agents/ -v
 ```
+
+### Test AWS Lambda Functions
+
+```bash
+# Test parser directly
+aws lambda invoke --function-name resumerank-parser-dev \
+  --payload '{"file_path":"resumes/job-1/test.pdf"}' response.json
+
+# Test ranking directly
+aws lambda invoke --function-name resumerank-ranking-dev \
+  --payload '{"resumes":[...],"job":{...}}' response.json
+
+# Test via API Gateway
+curl -X POST https://xxx.execute-api.us-east-1.amazonaws.com/dev/parse \
+  -H "Content-Type: application/json" \
+  -d '{"file_path":"resumes/job-1/test.pdf"}'
+```
+
+## AWS Services Used
+
+| Service | Purpose |
+|---------|---------|
+| S3 | Store uploaded resume files (PDF/DOCX) |
+| Lambda | Resume Parser and Ranking Agent functions |
+| API Gateway | REST API endpoints for Lambda invocation |
+| Bedrock | Claude LLM for AI processing |
+| IAM | Roles and policies for service access |
+| CloudWatch | Logging and monitoring |
 
 ## License
 

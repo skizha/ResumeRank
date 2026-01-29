@@ -26,3 +26,13 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# AWS/Terraform
+dist/
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+tfplan
+*.tfvars
+!example.tfvars
