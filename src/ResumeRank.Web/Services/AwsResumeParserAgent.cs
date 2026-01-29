@@ -27,7 +27,7 @@ public class AwsResumeParserAgent : IResumeParserAgent
         {
             _logger.LogInformation("Calling AWS resume parser for {FilePath}", filePath);
 
-            var response = await _httpClient.PostAsJsonAsync("/parse", request);
+            var response = await _httpClient.PostAsJsonAsync("parse", request);
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadFromJsonAsync<AwsParserResponse>();

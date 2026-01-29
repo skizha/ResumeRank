@@ -50,10 +50,15 @@ try {
     New-Item -ItemType Directory -Path $LayerPythonDir | Out-Null
 
     # Install dependencies to layer directory
+    # Use --platform to ensure Linux-compatible binaries for Lambda
     $RequirementsFile = Join-Path $LambdaSource "requirements.txt"
-    & $PythonPath -m pip install -r $RequirementsFile -t $LayerPythonDir --quiet
+    & $PythonPath -m pip install -r $RequirementsFile -t $LayerPythonDir --quiet --platform manylinux2014_x86_64 --only-binary=:all: --implementation cp --python-version 3.11
     if ($LASTEXITCODE -ne 0) {
-        throw "Failed to install dependencies"
+        Write-Host "Falling back to standard pip install (may not work for native extensions)..." -ForegroundColor Yellow
+        & $PythonPath -m pip install -r $RequirementsFile -t $LayerPythonDir --quiet
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to install dependencies"
+        }
     }
 
     # Create layer zip

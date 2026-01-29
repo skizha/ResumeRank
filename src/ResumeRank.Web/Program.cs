@@ -111,16 +111,19 @@ static void ConfigureAwsServices(WebApplicationBuilder builder)
     // Register S3 file storage
     builder.Services.AddScoped<IFileStorage, S3FileStorage>();
 
+    // Ensure base URL ends with / for relative path resolution
+    var baseUrl = apiGatewayUrl.TrimEnd('/') + "/";
+
     // Register AWS agent implementations
     builder.Services.AddHttpClient<IResumeParserAgent, AwsResumeParserAgent>(client =>
     {
-        client.BaseAddress = new Uri(apiGatewayUrl);
+        client.BaseAddress = new Uri(baseUrl);
         client.Timeout = TimeSpan.FromSeconds(60); // Longer timeout for cold starts
     });
 
     builder.Services.AddHttpClient<IRankingAgent, AwsRankingAgent>(client =>
     {
-        client.BaseAddress = new Uri(apiGatewayUrl);
+        client.BaseAddress = new Uri(baseUrl);
         client.Timeout = TimeSpan.FromSeconds(180); // Longer timeout for cold starts
     });
 }

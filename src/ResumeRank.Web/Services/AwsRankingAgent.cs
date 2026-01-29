@@ -55,7 +55,7 @@ public class AwsRankingAgent : IRankingAgent
             _logger.LogInformation("Calling AWS ranking agent for job {JobTitle} with {ResumeCount} resumes",
                 job.Title, resumes.Count);
 
-            var response = await _httpClient.PostAsJsonAsync("/rank", request);
+            var response = await _httpClient.PostAsJsonAsync("rank", request);
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadFromJsonAsync<AwsRankResponse>();
