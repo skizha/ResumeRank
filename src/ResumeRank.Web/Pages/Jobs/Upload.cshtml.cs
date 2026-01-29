@@ -11,21 +11,21 @@ public class UploadModel : PageModel
     private readonly IJobService _jobService;
     private readonly AppDbContext _db;
     private readonly IResumeParserAgent _parserAgent;
-    private readonly IConfiguration _configuration;
-    private readonly IWebHostEnvironment _env;
+    private readonly IFileStorage _fileStorage;
+    private readonly ILogger<UploadModel> _logger;
 
     public UploadModel(
         IJobService jobService,
         AppDbContext db,
         IResumeParserAgent parserAgent,
-        IConfiguration configuration,
-        IWebHostEnvironment env)
+        IFileStorage fileStorage,
+        ILogger<UploadModel> logger)
     {
         _jobService = jobService;
         _db = db;
         _parserAgent = parserAgent;
-        _configuration = configuration;
-        _env = env;
+        _fileStorage = fileStorage;
+        _logger = logger;
     }
 
     public JobDescription Job { get; set; } = null!;
@@ -57,24 +57,26 @@ public class UploadModel : PageModel
             return Page();
         }
 
-        var uploadPath = Path.Combine(_env.ContentRootPath,
-            _configuration["FileStorage:UploadPath"] ?? "uploads", id);
-        Directory.CreateDirectory(uploadPath);
-
         foreach (var file in Files)
         {
             var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
             if (ext != ".pdf" && ext != ".docx")
                 continue;
 
-            var safeFileName = $"{Guid.NewGuid()}{ext}";
-            var filePath = Path.Combine(uploadPath, safeFileName);
+            // Determine content type
+            var contentType = ext == ".pdf" ? "application/pdf"
+                : "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            // Upload file using the file storage service (local or S3)
+            string filePath;
+            using (var stream = file.OpenReadStream())
             {
-                await file.CopyToAsync(stream);
+                filePath = await _fileStorage.UploadAsync(id, file.FileName, stream, contentType);
             }
 
+            _logger.LogInformation("Uploaded file {FileName} to {FilePath}", file.FileName, filePath);
+
+            // Parse the resume using the parser agent
             var parsed = await _parserAgent.ParseAsync(filePath);
 
             var resume = new Resume
