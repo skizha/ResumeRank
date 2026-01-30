@@ -5,7 +5,7 @@ from anthropic import Anthropic
 
 from shared.config import ANTHROPIC_API_KEY
 
-from .models import ParsedResumeResponse
+from .models import ParsedResumeResponse, SuitableRole
 
 
 class ResumeParserAgent:
@@ -66,7 +66,10 @@ Extract the following and respond ONLY with valid JSON:
   "skills": ["<list of technical and professional skills mentioned>"],
   "experience_level": "<one of: Junior, Mid, Senior, based on years of experience and role titles>",
   "summary": "<2-3 sentence professional summary of the candidate>",
-  "suitable_roles": ["<list of job roles this candidate could perform based on their skills and experience>"]
+  "suitable_roles": [
+    {{"role": "<job title>", "score": <1-10>}},
+    ...
+  ]
 }}
 
 Rules:
@@ -74,7 +77,13 @@ Rules:
 - For skills: List all specific technical skills, tools, frameworks, certifications, and professional competencies mentioned. Be thorough but only include skills explicitly stated.
 - For experience_level: Junior = 0-2 years or entry-level titles, Mid = 3-6 years or mid-level titles, Senior = 7+ years or senior/lead/principal titles.
 - For summary: Write a brief professional summary based on the resume content.
-- For suitable_roles: Based on the candidate's skills and experience, suggest 3-6 job titles/roles they could realistically perform. Consider adjacent roles (e.g., someone with AWS + Docker experience could be a Cloud Engineer, DevOps Engineer, or Infrastructure Engineer). Include both their current role type and transferable roles.
+- For suitable_roles: Based on the candidate's skills and experience, suggest 3-6 job titles/roles they could realistically perform with a suitability score:
+  - Score 9-10: Excellent fit - candidate's primary expertise matches this role
+  - Score 7-8: Good fit - candidate has strong relevant skills
+  - Score 5-6: Moderate fit - candidate could transition with some upskilling
+  - Score 3-4: Stretch role - significant skill gaps but transferable experience
+  - Score 1-2: Weak fit - minimal alignment
+  - Sort roles by score (highest first)
 
 Respond ONLY with the JSON object, no other text."""
 
@@ -97,10 +106,23 @@ Respond ONLY with the JSON object, no other text."""
             else:
                 raise ValueError("Failed to parse LLM response as JSON")
 
+        # Parse suitable_roles - handle both old (list[str]) and new (list[dict]) formats
+        raw_roles = parsed.get("suitable_roles", [])
+        suitable_roles = []
+        for item in raw_roles:
+            if isinstance(item, dict):
+                suitable_roles.append(SuitableRole(
+                    role=item.get("role", "Unknown"),
+                    score=item.get("score", 5)
+                ))
+            elif isinstance(item, str):
+                # Backward compatibility: string roles get a default score
+                suitable_roles.append(SuitableRole(role=item, score=5))
+
         return ParsedResumeResponse(
             candidate_name=parsed.get("candidate_name", Path(file_path).stem),
             skills=parsed.get("skills", []),
             experience_level=parsed.get("experience_level", "Unknown"),
             summary=parsed.get("summary"),
-            suitable_roles=parsed.get("suitable_roles", []),
+            suitable_roles=suitable_roles,
         )

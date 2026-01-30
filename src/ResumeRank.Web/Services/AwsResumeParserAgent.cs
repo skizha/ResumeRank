@@ -42,7 +42,11 @@ public class AwsResumeParserAgent : IResumeParserAgent
                 Skills = result.Skills,
                 ExperienceLevel = result.ExperienceLevel,
                 Summary = result.Summary,
-                SuitableRoles = result.SuitableRoles
+                SuitableRoles = result.SuitableRoles.Select(r => new SuitableRole
+                {
+                    Role = r.Role,
+                    Score = r.Score
+                }).ToList()
             };
         }
         catch (HttpRequestException ex)
@@ -72,6 +76,15 @@ public class AwsResumeParserAgent : IResumeParserAgent
         public string? Summary { get; set; }
 
         [JsonPropertyName("suitable_roles")]
-        public List<string> SuitableRoles { get; set; } = new();
+        public List<AwsSuitableRoleResponse> SuitableRoles { get; set; } = new();
+    }
+
+    private class AwsSuitableRoleResponse
+    {
+        [JsonPropertyName("role")]
+        public string Role { get; set; } = string.Empty;
+
+        [JsonPropertyName("score")]
+        public int Score { get; set; }
     }
 }
