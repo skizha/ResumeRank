@@ -69,6 +69,7 @@ else
             <tr>
                 <th>Candidate</th>
                 <th>File</th>
+                <th>Suitable Roles</th>
                 <th>Uploaded</th>
                 <th></th>
             </tr>
@@ -76,9 +77,37 @@ else
         <tbody>
             @foreach (var resume in Model.Resumes)
             {
+                var suitableRoles = Model.ResumeSuitableRoles.GetValueOrDefault(resume.Id, new List<ResumeRank.Web.Models.SuitableRole>());
                 <tr>
                     <td>@resume.CandidateName</td>
                     <td>@resume.FileName</td>
+                    <td>
+                        @if (suitableRoles.Any())
+                        {
+                            @foreach (var role in suitableRoles.Take(4))
+                            {
+                                var badgeClass = role.Score >= 8 ? "bg-success"
+                                               : role.Score >= 5 ? "bg-warning text-dark"
+                                               : role.Score > 0 ? "bg-danger"
+                                               : "bg-secondary";
+                                <span class="badge @badgeClass me-1 mb-1" title="Suitability: @role.Score/10">
+                                    @role.Role
+                                    @if (role.Score > 0)
+                                    {
+                                        <span class="ms-1">(@role.Score)</span>
+                                    }
+                                </span>
+                            }
+                            @if (suitableRoles.Count > 4)
+                            {
+                                <span class="text-muted small">+@(suitableRoles.Count - 4) more</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-muted">-</span>
+                        }
+                    </td>
                     <td>@resume.UploadedAt.ToString("yyyy-MM-dd HH:mm")</td>
                     <td>
                         <form method="post" asp-page-handler="Delete" asp-route-id="@Model.Job.Id" asp-route-resumeId="@resume.Id" class="d-inline" onsubmit="return confirm('Delete this resume?');">

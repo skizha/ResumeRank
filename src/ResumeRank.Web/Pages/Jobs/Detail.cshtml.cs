@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,12 @@ public class DetailModel : PageModel
     public JobDescription Job { get; set; } = null!;
     public List<Resume> Resumes { get; set; } = new();
     public List<RankingResult> Rankings { get; set; } = new();
+    public Dictionary<int, List<SuitableRole>> ResumeSuitableRoles { get; set; } = new();
+
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
 
     public IActionResult OnGet(string id)
     {
@@ -37,6 +44,12 @@ public class DetailModel : PageModel
             .Where(r => r.JobId == id)
             .OrderByDescending(r => r.OverallScore)
             .ToList();
+
+        // Parse suitable roles from each resume's ParsedData
+        foreach (var resume in Resumes)
+        {
+            ResumeSuitableRoles[resume.Id] = ParseSuitableRoles(resume.ParsedData);
+        }
 
         return Page();
     }
@@ -80,5 +93,50 @@ public class DetailModel : PageModel
         }
 
         return RedirectToPage(new { id });
+    }
+
+    private List<SuitableRole> ParseSuitableRoles(string? parsedDataJson)
+    {
+        if (string.IsNullOrEmpty(parsedDataJson))
+            return new List<SuitableRole>();
+
+        try
+        {
+            using var doc = JsonDocument.Parse(parsedDataJson);
+            var root = doc.RootElement;
+
+            if (!root.TryGetProperty("SuitableRoles", out var rolesElement) &&
+                !root.TryGetProperty("suitable_roles", out rolesElement))
+            {
+                return new List<SuitableRole>();
+            }
+
+            var roles = new List<SuitableRole>();
+            foreach (var item in rolesElement.EnumerateArray())
+            {
+                if (item.ValueKind == JsonValueKind.Object)
+                {
+                    // New format: { "role": "...", "score": N } or { "Role": "...", "Score": N }
+                    var role = item.TryGetProperty("role", out var r) ? r.GetString()
+                             : item.TryGetProperty("Role", out r) ? r.GetString()
+                             : "Unknown";
+                    var score = item.TryGetProperty("score", out var s) ? s.GetInt32()
+                              : item.TryGetProperty("Score", out s) ? s.GetInt32()
+                              : 0;
+                    roles.Add(new SuitableRole { Role = role ?? "Unknown", Score = score });
+                }
+                else if (item.ValueKind == JsonValueKind.String)
+                {
+                    // Old format: just a string
+                    roles.Add(new SuitableRole { Role = item.GetString() ?? "Unknown", Score = 0 });
+                }
+            }
+
+            return roles.OrderByDescending(r => r.Score).ToList();
+        }
+        catch
+        {
+            return new List<SuitableRole>();
+        }
     }
 }
