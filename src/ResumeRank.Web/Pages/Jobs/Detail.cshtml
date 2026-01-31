@@ -100,7 +100,17 @@ else
                             }
                             @if (suitableRoles.Count > 4)
                             {
-                                <span class="text-muted small">+@(suitableRoles.Count - 4) more</span>
+                                var remainingRoles = suitableRoles.Skip(4).ToList();
+                                var popoverContent = string.Join("", remainingRoles.Select(r => {
+                                    var cls = r.Score >= 8 ? "bg-success" : r.Score >= 5 ? "bg-warning text-dark" : r.Score > 0 ? "bg-danger" : "bg-secondary";
+                                    var scoreText = r.Score > 0 ? $" ({r.Score})" : "";
+                                    return $"<span class='badge {cls} me-1 mb-1'>{r.Role}{scoreText}</span>";
+                                }));
+                                <a href="#" class="text-muted small" tabindex="0" role="button"
+                                   data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
+                                   data-bs-title="More Suitable Roles" data-bs-content="@popoverContent">
+                                    +@(suitableRoles.Count - 4) more
+                                </a>
                             }
                         }
                         else
@@ -151,4 +161,15 @@ else
             }
         </tbody>
     </table>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl);
+            });
+        });
+    </script>
 }
