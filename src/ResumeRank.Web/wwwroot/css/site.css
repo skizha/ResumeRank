@@ -197,20 +197,29 @@ h2 {
 
 .skill-tag {
   display: inline-block;
-  padding: 0.375rem 0.75rem;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-900);
-  border-radius: 2px;
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
-  transition: background-color var(--transition-fast);
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: 400;
+  background-color: transparent;
+  color: var(--color-gray-700);
+  border-radius: 0;
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.skill-tag::after {
+  content: ",";
+  color: var(--color-gray-300);
+}
+
+.skill-tag:last-child::after {
+  content: "";
 }
 
 .skill-tag--required {
-  background-color: var(--color-black);
-  color: var(--color-white);
+  background-color: transparent;
+  color: var(--color-black);
+  font-weight: 500;
 }
 
 /* ==========================================================================
@@ -267,16 +276,16 @@ h2 {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-gray-500);
-  padding: 0 0 1rem 0;
+  padding: 0 0 0.625rem 0;
   border-bottom: 1px solid var(--color-gray-300);
   text-align: left;
   background: transparent;
 }
 
 .table-swiss tbody td {
-  padding: 1.25rem 1rem 1.25rem 0;
+  padding: 0.625rem 1rem 0.625rem 0;
   border-bottom: 1px solid var(--color-gray-100);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   color: var(--color-black);
   vertical-align: middle;
   background: transparent;

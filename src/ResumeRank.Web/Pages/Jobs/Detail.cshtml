@@ -136,7 +136,7 @@ else
                                         var scoreText = r.Score > 0 ? $"<span class='role-score'>{r.Score}</span>" : "";
                                         return $"<span class='role-tag {cls}'>{r.Role}{scoreText}</span>";
                                     }));
-                                    <a href="#" class="more-roles" tabindex="0" role="button"
+                                    <a href="javascript:void(0)" class="more-roles" tabindex="0" role="button"
                                        data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
                                        data-bs-title="More Roles" data-bs-content="<div class='role-tags'>@popoverContent</div>">
                                         +@(suitableRoles.Count - 4) more
