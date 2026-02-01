@@ -4,7 +4,7 @@
     ViewData["Title"] = $"Upload Resumes - {Model.Job.Title}";
 }
 
-<nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-page="/Index">Jobs</a></li>
         <li class="breadcrumb-item"><a asp-page="/Jobs/Detail" asp-route-id="@Model.Job.Id">@Model.Job.Title</a></li>
@@ -12,16 +12,22 @@
     </ol>
 </nav>
 
-<h1>Upload Resumes</h1>
-<p class="text-muted">Upload resume files for <strong>@Model.Job.Title</strong>. Accepted formats: PDF, DOCX.</p>
+<div class="job-header" style="border-bottom: none; padding-bottom: 0; margin-bottom: 2rem;">
+    <h1 class="job-title">Upload Resumes</h1>
+    <p class="job-description" style="margin-top: 0.5rem;">
+        Upload resume files for <strong>@Model.Job.Title</strong>. Accepted formats: PDF, DOCX.
+    </p>
+</div>
 
-<div asp-validation-summary="All" class="text-danger"></div>
+<div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-<form method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="files" class="form-label">Select Files</label>
+<form method="post" enctype="multipart/form-data" style="max-width: 480px;">
+    <div class="mb-4">
+        <label for="files" class="skills-label" style="margin-bottom: 0.5rem; display: block;">Select Files</label>
         <input type="file" class="form-control" id="files" name="Files" multiple accept=".pdf,.docx" />
     </div>
-    <button type="submit" class="btn btn-primary">Upload</button>
-    <a asp-page="/Jobs/Detail" asp-route-id="@Model.Job.Id" class="btn btn-outline-secondary ms-2">Cancel</a>
+    <div class="btn-group-actions">
+        <button type="submit" class="btn btn-primary">Upload</button>
+        <a asp-page="/Jobs/Detail" asp-route-id="@Model.Job.Id" class="btn btn-ghost">Cancel</a>
+    </div>
 </form>

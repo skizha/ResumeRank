@@ -4,55 +4,82 @@
     ViewData["Title"] = Model.Job.Title;
 }
 
-<nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-page="/Index">Jobs</a></li>
         <li class="breadcrumb-item active">@Model.Job.Title</li>
     </ol>
 </nav>
 
-<h1>@Model.Job.Title</h1>
-<div class="row mb-4">
-    <div class="col-md-8">
-        <p class="text-muted">
-            <strong>Department:</strong> @Model.Job.Department |
-            <strong>Experience:</strong> @Model.Job.ExperienceLevel |
-            <strong>Location:</strong> @Model.Job.Location
-        </p>
-        <p style="white-space: pre-line">@Model.Job.Description</p>
-    </div>
-    <div class="col-md-4">
-        <div class="card mb-3">
-            <div class="card-header">Required Skills</div>
-            <div class="card-body">
-                @foreach (var skill in Model.Job.RequiredSkills)
-                {
-                    <span class="badge bg-primary me-1 mb-1">@skill</span>
-                }
+<div class="job-header">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="job-title">@Model.Job.Title</h1>
+
+            <div class="job-meta">
+                <div class="job-meta-item">
+                    <span class="job-meta-label">Department</span>
+                    <span class="job-meta-value">@Model.Job.Department</span>
+                </div>
+                <div class="job-meta-item">
+                    <span class="job-meta-label">Experience</span>
+                    <span class="job-meta-value">@Model.Job.ExperienceLevel</span>
+                </div>
+                <div class="job-meta-item">
+                    <span class="job-meta-label">Location</span>
+                    <span class="job-meta-value">@Model.Job.Location</span>
+                </div>
             </div>
+
+            @if (!string.IsNullOrEmpty(Model.Job.Description))
+            {
+                <p class="job-description">@Model.Job.Description</p>
+            }
         </div>
-        <div class="card">
-            <div class="card-header">Preferred Skills</div>
-            <div class="card-body">
-                @foreach (var skill in Model.Job.PreferredSkills)
+
+        <div class="col-lg-4">
+            <div class="skills-section">
+                @if (Model.Job.RequiredSkills.Any())
                 {
-                    <span class="badge bg-info me-1 mb-1">@skill</span>
+                    <div class="skills-group">
+                        <span class="skills-label">Required Skills</span>
+                        <div>
+                            @foreach (var skill in Model.Job.RequiredSkills)
+                            {
+                                <span class="skill-tag skill-tag--required">@skill</span>
+                            }
+                        </div>
+                    </div>
+                }
+
+                @if (Model.Job.PreferredSkills.Any())
+                {
+                    <div class="skills-group">
+                        <span class="skills-label">Preferred Skills</span>
+                        <div>
+                            @foreach (var skill in Model.Job.PreferredSkills)
+                            {
+                                <span class="skill-tag">@skill</span>
+                            }
+                        </div>
+                    </div>
                 }
             </div>
         </div>
     </div>
 </div>
 
-<hr />
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Resumes (@Model.Resumes.Count)</h2>
-    <div>
-        <a asp-page="/Jobs/Upload" asp-route-id="@Model.Job.Id" class="btn btn-primary me-2">Upload Resumes</a>
+<div class="section-header">
+    <div class="section-title">
+        <h2>Resumes</h2>
+        <span class="section-count">@Model.Resumes.Count uploaded</span>
+    </div>
+    <div class="btn-group-actions">
+        <a asp-page="/Jobs/Upload" asp-route-id="@Model.Job.Id" class="btn btn-primary">Upload Resumes</a>
         @if (Model.Resumes.Count > 0)
         {
             <form method="post" asp-page-handler="Rank" asp-route-id="@Model.Job.Id" class="d-inline">
-                <button type="submit" class="btn btn-success">Rank Resumes</button>
+                <button type="submit" class="btn btn-accent">Rank Resumes</button>
             </form>
         }
     </div>
@@ -60,12 +87,14 @@
 
 @if (Model.Resumes.Count == 0)
 {
-    <div class="alert alert-info">No resumes uploaded yet. Upload resumes to get started.</div>
+    <div class="alert-empty">
+        No resumes uploaded yet. Upload resumes to get started.
+    </div>
 }
 else
 {
-    <table class="table table-sm">
-        <thead class="table-light">
+    <table class="table-swiss">
+        <thead>
             <tr>
                 <th>Candidate</th>
                 <th>File</th>
@@ -79,39 +108,51 @@ else
             {
                 var suitableRoles = Model.ResumeSuitableRoles.GetValueOrDefault(resume.Id, new List<ResumeRank.Web.Models.SuitableRole>());
                 <tr>
-                    <td>@resume.CandidateName</td>
-                    <td>@resume.FileName</td>
+                    <td class="candidate-name">@resume.CandidateName</td>
+                    <td class="file-name">@resume.FileName</td>
                     <td>
                         @if (suitableRoles.Any())
                         {
-                            @foreach (var role in suitableRoles.Take(4))
-                            {
-                                var badgeClass = role.Score >= 8 ? "bg-success"
-                                               : role.Score >= 5 ? "bg-warning text-dark"
-                                               : role.Score > 0 ? "bg-danger"
-                                               : "bg-secondary";
-                                <span class="badge @badgeClass me-1 mb-1" title="Suitability: @role.Score/10">
-                                    @role.Role
-                                    @if (role.Score > 0)
-                                    {
-                                        <span class="ms-1">(@role.Score)</span>
-                                    }
-                                </span>
-                            }
-                            @if (suitableRoles.Count > 4)
-                            {
-                                <span class="text-muted small">+@(suitableRoles.Count - 4) more</span>
-                            }
+                            <div class="role-tags">
+                                @foreach (var role in suitableRoles.Take(4))
+                                {
+                                    var tagClass = role.Score >= 8 ? "role-tag--high"
+                                                 : role.Score >= 5 ? "role-tag--medium"
+                                                 : role.Score > 0 ? "role-tag--low"
+                                                 : "";
+                                    <span class="role-tag @tagClass">
+                                        @role.Role
+                                        @if (role.Score > 0)
+                                        {
+                                            <span class="role-score">@role.Score</span>
+                                        }
+                                    </span>
+                                }
+                                @if (suitableRoles.Count > 4)
+                                {
+                                    var remainingRoles = suitableRoles.Skip(4).ToList();
+                                    var popoverContent = string.Join("", remainingRoles.Select(r => {
+                                        var cls = r.Score >= 8 ? "role-tag--high" : r.Score >= 5 ? "role-tag--medium" : r.Score > 0 ? "role-tag--low" : "";
+                                        var scoreText = r.Score > 0 ? $"<span class='role-score'>{r.Score}</span>" : "";
+                                        return $"<span class='role-tag {cls}'>{r.Role}{scoreText}</span>";
+                                    }));
+                                    <a href="javascript:void(0)" class="more-roles" tabindex="0" role="button"
+                                       data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
+                                       data-bs-title="More Roles" data-bs-content="<div class='role-tags'>@popoverContent</div>">
+                                        +@(suitableRoles.Count - 4) more
+                                    </a>
+                                }
+                            </div>
                         }
                         else
                         {
-                            <span class="text-muted">-</span>
+                            <span class="text-muted">—</span>
                         }
                     </td>
-                    <td>@resume.UploadedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="date">@resume.UploadedAt.ToString("MMM d, yyyy")</td>
                     <td>
                         <form method="post" asp-page-handler="Delete" asp-route-id="@Model.Job.Id" asp-route-resumeId="@resume.Id" class="d-inline" onsubmit="return confirm('Delete this resume?');">
-                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -122,33 +163,63 @@ else
 
 @if (Model.Rankings.Count > 0)
 {
-    <hr />
-    <h2>Rankings</h2>
-    <table class="table table-striped">
-        <thead class="table-light">
-            <tr>
-                <th>#</th>
-                <th>Candidate</th>
-                <th>Overall</th>
-                <th>Skill Match</th>
-                <th>Experience Match</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{ var rank = 1; }
-            @foreach (var result in Model.Rankings)
-            {
+    <div class="rankings-section">
+        <hr class="section-divider" />
+
+        <div class="section-header">
+            <div class="section-title">
+                <h2>Rankings</h2>
+                <span class="section-count">@Model.Rankings.Count candidates</span>
+            </div>
+        </div>
+
+        <table class="table-swiss">
+            <thead>
                 <tr>
-                    <td>@rank</td>
-                    <td>@result.Resume.CandidateName</td>
-                    <td><strong>@result.OverallScore</strong></td>
-                    <td>@result.SkillMatchScore</td>
-                    <td>@result.ExperienceMatchScore</td>
-                    <td>@result.Summary</td>
+                    <th style="width: 60px;">Rank</th>
+                    <th>Candidate</th>
+                    <th style="width: 100px;">Overall</th>
+                    <th style="width: 100px;">Skills</th>
+                    <th style="width: 100px;">Experience</th>
+                    <th>Summary</th>
                 </tr>
-                rank++;
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @{ var rank = 1; }
+                @foreach (var result in Model.Rankings)
+                {
+                    <tr>
+                        <td>
+                            <span class="rank-number @(rank <= 3 ? "rank-number--top" : "")">@rank</span>
+                        </td>
+                        <td class="candidate-name">@result.Resume.CandidateName</td>
+                        <td>
+                            <span class="score-display">@result.OverallScore</span>
+                        </td>
+                        <td>
+                            <span class="score-secondary">@result.SkillMatchScore</span>
+                        </td>
+                        <td>
+                            <span class="score-secondary">@result.ExperienceMatchScore</span>
+                        </td>
+                        <td>
+                            <span class="summary-text">@result.Summary</span>
+                        </td>
+                    </tr>
+                    rank++;
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl);
+            });
+        });
+    </script>
 }
