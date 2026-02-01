@@ -1,5 +1,38 @@
+/* ==========================================================================
+   Swiss Precision Design System
+   Inspired by Swiss/International Typography
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+
+:root {
+  --color-black: #0a0a0a;
+  --color-gray-900: #1a1a1a;
+  --color-gray-700: #404040;
+  --color-gray-500: #737373;
+  --color-gray-300: #d4d4d4;
+  --color-gray-100: #f5f5f5;
+  --color-white: #ffffff;
+  --color-accent: #E85D4C;
+  --color-accent-hover: #d14d3d;
+  --color-success: #2d6a4f;
+  --color-warning: #b45309;
+  --color-danger: #b91c1c;
+
+  --font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --transition-fast: 120ms ease-out;
+  --transition-normal: 200ms ease-out;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 html {
-  font-size: 14px;
+  font-size: 15px;
+  position: relative;
+  min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -8,162 +41,586 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
-  margin-bottom: 60px;
-  background-color: #f8f9fa;
+  font-family: var(--font-family);
+  background-color: var(--color-white);
+  color: var(--color-black);
+  margin-bottom: 80px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
 }
 
-/* Navbar */
+/* ==========================================================================
+   Focus States
+   ========================================================================== */
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-accent);
+  outline: none;
+}
+
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+
 nav.navbar {
-  background-color: #fff !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  background-color: var(--color-white) !important;
+  border-bottom: 1px solid var(--color-gray-100);
+  box-shadow: none;
+  padding: 1.25rem 0;
 }
 
 .navbar-brand {
-  font-weight: 700;
-  color: #2563eb !important;
-  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-black) !important;
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+  transition: opacity var(--transition-fast);
 }
 
-/* Page headings */
+.navbar-brand:hover {
+  opacity: 0.7;
+}
+
+.nav-link {
+  color: var(--color-gray-700) !important;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0;
+  transition: color var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--color-black) !important;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
 h1 {
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 0.25rem;
+  font-weight: 600;
+  color: var(--color-black);
+  font-size: 2rem;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
 }
 
 h2 {
   font-weight: 600;
-  color: #334155;
-  font-size: 1.35rem;
-}
-
-/* Tables */
-.table {
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-}
-
-.table thead th {
-  border-bottom-width: 1px;
-  font-weight: 600;
-  font-size: 0.85rem;
+  color: var(--color-black);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: #64748b;
+  margin-bottom: 1.5rem;
 }
 
-.table tbody tr:hover {
-  background-color: #f1f5f9;
+.text-muted {
+  color: var(--color-gray-500) !important;
 }
 
-/* Cards */
-.card {
-  border: none;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  border-radius: 8px;
+/* ==========================================================================
+   Layout - Job Detail Page
+   ========================================================================== */
+
+.job-header {
+  padding: 2.5rem 0 2rem;
+  border-bottom: 1px solid var(--color-gray-100);
+  margin-bottom: 3rem;
 }
 
-.card-header {
-  background-color: #f8fafc;
+.job-title {
+  font-size: 2.25rem;
   font-weight: 600;
-  font-size: 0.9rem;
-  color: #475569;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-/* Badges */
-.badge {
-  font-weight: 500;
-  padding: 0.4em 0.7em;
-  font-size: 0.8rem;
-}
-
-.badge.bg-primary {
-  background-color: #2563eb !important;
-}
-
-.badge.bg-info {
-  background-color: #0ea5e9 !important;
-  color: #fff !important;
-}
-
-/* Buttons */
-.btn-primary {
-  background-color: #2563eb;
-  border-color: #2563eb;
-}
-
-.btn-primary:hover {
-  background-color: #1d4ed8;
-  border-color: #1d4ed8;
-}
-
-.btn-success {
-  background-color: #16a34a;
-  border-color: #16a34a;
-}
-
-.btn-success:hover {
-  background-color: #15803d;
-  border-color: #15803d;
-}
-
-.btn-outline-primary {
-  color: #2563eb;
-  border-color: #2563eb;
-}
-
-.btn-outline-primary:hover {
-  background-color: #2563eb;
-  border-color: #2563eb;
-}
-
-/* Breadcrumbs */
-.breadcrumb {
-  background: transparent;
-  padding: 0;
+  letter-spacing: -0.03em;
   margin-bottom: 1rem;
-  font-size: 0.9rem;
+  line-height: 1.1;
 }
 
-/* Alerts */
-.alert-info {
-  background-color: #eff6ff;
-  border-color: #bfdbfe;
-  color: #1e40af;
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-/* Footer */
-footer {
-  background-color: #fff;
+.job-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.job-meta-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gray-500);
+}
+
+.job-meta-value {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-black);
+}
+
+.job-description {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-gray-700);
+  max-width: 680px;
+  white-space: pre-line;
+}
+
+/* ==========================================================================
+   Skills Section
+   ========================================================================== */
+
+.skills-section {
+  margin-top: 2rem;
+}
+
+.skills-group {
+  margin-bottom: 1.5rem;
+}
+
+.skills-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gray-500);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.skill-tag {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-900);
+  border-radius: 2px;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: background-color var(--transition-fast);
+}
+
+.skill-tag--required {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+/* ==========================================================================
+   Section Divider
+   ========================================================================== */
+
+.section-divider {
+  height: 1px;
+  background-color: var(--color-gray-100);
+  margin: 3rem 0;
+  border: none;
+}
+
+/* ==========================================================================
+   Section Header
+   ========================================================================== */
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.section-count {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-gray-500);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ==========================================================================
+   Tables - Swiss Minimal
+   ========================================================================== */
+
+.table-swiss {
+  width: 100%;
+  background: transparent;
+  border-collapse: collapse;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.table-swiss thead th {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gray-500);
+  padding: 0 0 1rem 0;
+  border-bottom: 1px solid var(--color-gray-300);
+  text-align: left;
+  background: transparent;
+}
+
+.table-swiss tbody td {
+  padding: 1.25rem 1rem 1.25rem 0;
+  border-bottom: 1px solid var(--color-gray-100);
+  font-size: 0.9375rem;
+  color: var(--color-black);
+  vertical-align: middle;
+  background: transparent;
+}
+
+.table-swiss tbody tr {
+  transition: opacity var(--transition-fast);
+}
+
+.table-swiss tbody tr:hover {
+  background: transparent;
+}
+
+.table-swiss tbody tr:hover td {
+  opacity: 0.7;
+}
+
+.table-swiss .candidate-name {
+  font-weight: 500;
+}
+
+.table-swiss .file-name {
+  color: var(--color-gray-500);
   font-size: 0.875rem;
 }
 
-/* Upload form */
+.table-swiss .date {
+  color: var(--color-gray-500);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Role Tags with Scores
+   ========================================================================== */
+
+.role-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.role-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-700);
+  border-radius: 2px;
+  transition: opacity var(--transition-fast);
+}
+
+.role-tag:hover {
+  opacity: 0.8;
+}
+
+.role-tag--high {
+  background-color: #dcfce7;
+  color: var(--color-success);
+}
+
+.role-tag--medium {
+  background-color: #fef3c7;
+  color: var(--color-warning);
+}
+
+.role-tag--low {
+  background-color: #fee2e2;
+  color: var(--color-danger);
+}
+
+.role-score {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.more-roles {
+  font-size: 0.8125rem;
+  color: var(--color-gray-500);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.more-roles:hover {
+  color: var(--color-black);
+}
+
+/* ==========================================================================
+   Buttons - Minimal
+   ========================================================================== */
+
+.btn {
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 2px;
+  transition: all var(--transition-fast);
+  letter-spacing: 0;
+}
+
+.btn-primary {
+  background-color: var(--color-black);
+  border-color: var(--color-black);
+  color: var(--color-white);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-gray-700);
+  border-color: var(--color-gray-700);
+}
+
+.btn-accent {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+.btn-accent:hover {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+.btn-success {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.btn-success:hover {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-700);
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-gray-500);
+  color: var(--color-black);
+}
+
+.btn-outline-danger {
+  background-color: transparent;
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-500);
+  font-size: 0.8125rem;
+  padding: 0.375rem 0.75rem;
+}
+
+.btn-outline-danger:hover {
+  background-color: #fee2e2;
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.btn-group-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   Rankings Table
+   ========================================================================== */
+
+.rankings-section {
+  margin-top: 4rem;
+}
+
+.rank-number {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-gray-300);
+  font-variant-numeric: tabular-nums;
+  min-width: 2.5rem;
+}
+
+.rank-number--top {
+  color: var(--color-accent);
+}
+
+.score-display {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-black);
+  font-variant-numeric: tabular-nums;
+}
+
+.score-secondary {
+  font-size: 0.875rem;
+  color: var(--color-gray-500);
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-text {
+  font-size: 0.875rem;
+  color: var(--color-gray-700);
+  line-height: 1.5;
+  max-width: 400px;
+}
+
+/* ==========================================================================
+   Breadcrumbs
+   ========================================================================== */
+
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 0;
+  font-size: 0.8125rem;
+}
+
+.breadcrumb-item a {
+  color: var(--color-gray-500);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.breadcrumb-item a:hover {
+  color: var(--color-black);
+}
+
+.breadcrumb-item.active {
+  color: var(--color-gray-500);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "→";
+  color: var(--color-gray-300);
+}
+
+/* ==========================================================================
+   Alerts
+   ========================================================================== */
+
+.alert-empty {
+  background-color: var(--color-gray-100);
+  border: none;
+  border-radius: 2px;
+  color: var(--color-gray-500);
+  font-size: 0.9375rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.alert-info {
+  background-color: var(--color-gray-100);
+  border: none;
+  border-radius: 2px;
+  color: var(--color-gray-700);
+}
+
+/* ==========================================================================
+   Cards - Minimal
+   ========================================================================== */
+
+.card {
+  border: 1px solid var(--color-gray-100);
+  box-shadow: none;
+  border-radius: 2px;
+}
+
+.card-header {
+  background-color: transparent;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gray-500);
+  border-bottom: 1px solid var(--color-gray-100);
+  padding: 1rem 1.25rem;
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+footer {
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-gray-100);
+  font-size: 0.8125rem;
+  color: var(--color-gray-500);
+  padding: 1.5rem 0;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+.form-control {
+  border: 1px solid var(--color-gray-300);
+  border-radius: 2px;
+  font-size: 0.9375rem;
+  padding: 0.625rem 0.875rem;
+  transition: border-color var(--transition-fast);
+}
+
+.form-control:focus {
+  border-color: var(--color-black);
+}
+
 .form-control[type="file"] {
   padding: 0.5rem;
 }
 
-/* Rankings highlight */
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: #f8fafc;
-}
+/* ==========================================================================
+   Container
+   ========================================================================== */
 
-/* Container max-width tweak */
 @media (min-width: 1200px) {
   .container {
-    max-width: 1100px;
+    max-width: 1000px;
   }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+.opacity-0 { opacity: 0; }
+.opacity-100 { opacity: 1; }
+
+/* Popover styling */
+.popover {
+  border: 1px solid var(--color-gray-200);
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.popover-header {
+  background-color: var(--color-gray-100);
+  border-bottom: 1px solid var(--color-gray-200);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
