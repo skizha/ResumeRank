@@ -10,6 +10,20 @@ A resume ranking application that uses AI agents to parse and score resumes agai
 - **Web Interface**: User-friendly Razor Pages frontend for managing jobs and resumes
 - **AWS Integration**: Deploy agents to AWS Lambda with S3 storage and API Gateway
 
+## Screenshots
+
+### Job description with uploaded resumes
+
+<img src="docs/screenshots/job-with-resumes.png" width="600" alt="Job description with uploaded resumes">
+
+Job detail page showing the job title, description, required and preferred skills, and the list of resumes uploaded for that job. You can upload PDF/DOCX files and run AI-powered ranking from here.
+
+### Ranking results
+
+<img src="docs/screenshots/ranking.png" width="600" alt="Ranking results">
+
+AI-generated ranking of candidates for the selected job. Each resume is scored and ordered by fit, with a short rationale. Use this view to compare candidates and decide who to interview.
+
 ## Architecture
 
 The application consists of three components:
