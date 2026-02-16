@@ -20,7 +20,7 @@ Job detail page showing the job title, description, required and preferred skill
 
 ### Ranking results
 
-<img src="docs/screenshots/ranking.png" width="600" alt="Ranking results">
+<img src="docs/screenshots/Ranking.png" width="600" alt="Ranking results">
 
 AI-generated ranking of candidates for the selected job. Each resume is scored and ordered by fit, with a short rationale. Use this view to compare candidates and decide who to interview.
 
