@@ -1,49 +1,46 @@
 # From Neural Networks to AI Agents: Rebuilding Resume Screening 10 Years Later
 
-Back in 2015, I built a resume ranking system the hard way. We used NLTK for natural language processing, vectorization for semantic matching, and neural networks to build a knowledge graph of job descriptions. A partner company scraped thousands of JDs, which we fed into the system to train it on what "good matches" looked like.
+Back in 2015, we built a resume ranking system the hard way. We used NLTK for natural language processing, vectorization for semantic matching, and neural networks to build a knowledge graph of job descriptions. A partner company scraped thousands of JDs, which we fed into the system to train it on what "good matches" looked like.
 
-The project took 6 months to build. Chunking text properly was an art. Grammar parsing was finicky. And the training cycles were brutal—one week's worth of new job descriptions required two weeks to update the language model.
+The project took months. Chunking text properly was an art. Grammar parsing was finicky. And the training cycles were brutal one week's worth of new job descriptions required two weeks to update the language model. Data cleanup was a constant headache.
 
-Then there were the biases. When too many similar JDs came through, the model skewed heavily toward that pattern. Cleaning and normalizing data was a constant battle.
+Then there were the biases. When too many similar JDs came through, the model skewed heavily toward that pattern. Normalizing data was a constant battle.
 
-Fast forward to 2024. I rebuilt the entire thing with AI agents. What took 6 months now took weeks. What took two weeks to retrain takes zero—the model adapts on the fly. And the results are significantly better.
+Fast forward to 2026. We rebuilt the whole thing with AI agents. What took 8-9 months the first time took weeks. Retraining which used to eat two weeks is gone entirely; the model adapts as it runs. And honestly, the results are better than I expected.
 
 Here's how it works now.
 
 ---
 
-## The Problem (Still) Exists
+## The problem (still) exists
 
 If you've ever screened resumes for a technical role, you know the drill. Two hundred applications land in your inbox. You need to find the ten worth interviewing.
 
-Manual screening takes days. Keyword matching is too crude—"5 years Python experience" doesn't tell you if someone can architect distributed systems or just wrote automation scripts. And identifying transferable skills? That requires careful reading that doesn't scale.
+Manual screening takes days. Keyword matching is too crude - "5 years Python experience" doesn't tell you if someone can architect distributed systems or just wrote automation scripts. And identifying transferable skills? That requires careful reading that doesn't scale.
 
 The problem hasn't changed. But the tools have.
 
 ---
 
-## The New Approach: AI Agents
+## The new approach: AI agents
 
-ResumeRank uses two AI agents working in sequence:
+ResumeRank uses two AI agents working in sequence.
 
 ### Agent 1: The Resume Parser
 
-Takes a PDF or DOCX resume and extracts structured data. Not just keywords—context. Work history with responsibilities, skills with inferred proficiency levels, education, certifications.
+Takes a PDF or DOCX resume and extracts structured data. Not just keywords context. Work history with responsibilities, skills with inferred proficiency levels, education, certifications.
 
-But here's the interesting part: it also identifies suitable roles the candidate could fill. Each role gets a suitability score from 1-10 based on the candidate's background.
+But here's the part I didn't expect to work as well as it does: the agent also identifies suitable roles the candidate could fill. Each role gets a suitability score from 1-10 based on their actual background.
 
 ### Agent 2: The Ranking Agent
 
-Compares all parsed resumes against specific job requirements. This isn't keyword matching—it's semantic understanding. The agent scores candidates on:
-- **Skill match**: Do they have what the job needs?
-- **Experience relevance**: Is their background applicable?
-- **Overall fit**: Holistic assessment with reasoning
+Compares all parsed resumes against specific job requirements. This isn't keyword matching it's semantic understanding. The agent scores candidates on skill match (do they have what the job needs), experience relevance (is their background actually applicable), and overall fit, with a plain-English explanation of the reasoning.
 
 The output is a ranked list with scores and a summary explaining why each candidate placed where they did.
 
 ---
 
-## The Architecture
+## The architecture
 
 ![Architecture Diagram](architecture-diagram.svg)
 
@@ -57,7 +54,7 @@ Job Requirements  → API Gateway → Ranking Lambda → Ranked Results
                               (reads parsed data from S3)
 ```
 
-### Tech Stack
+### Tech stack
 
 | Component | Technology |
 |-----------|------------|
@@ -68,17 +65,17 @@ Job Requirements  → API Gateway → Ranking Lambda → Ranked Results
 | API | API Gateway |
 | Infrastructure | Terraform |
 
-### Why This Stack?
+### Why this stack?
 
-**Serverless Lambda** means no servers to manage. Upload a resume, Lambda spins up, processes it, shuts down. Pay only for what you use.
+Serverless Lambda means no servers to manage. Upload a resume, Lambda spins up, processes it, shuts down. You pay for what you use which matters when load is unpredictable.
 
-**AWS Bedrock** gives access to Claude without hosting models. No GPU provisioning, no model management. Just API calls. For a tool that might process 50 resumes one week and 500 the next, this elasticity matters.
+AWS Bedrock gives access to Claude without hosting models. No GPU provisioning, no model management, just API calls. For a tool that might process 50 resumes one week and 500 the next, that elasticity matters more than cost optimization.
 
-**Terraform** makes the infrastructure reproducible. One command deploys everything—Lambda functions, API Gateway routes, S3 buckets, IAM roles.
+Terraform makes the infrastructure reproducible. One command deploys everything: Lambda functions, API Gateway routes, S3 buckets, IAM roles.
 
 ---
 
-## A Code Snippet: The Parser Prompt
+## A code snippet: the parser prompt
 
 The core of the parser agent is the prompt. Here's a simplified version:
 
@@ -110,9 +107,9 @@ Getting consistent, structured JSON output took iteration. Few-shot examples in 
 
 ---
 
-## What Surprised Me
+## What surprised me
 
-The "suitable roles" feature wasn't in the original plan. I added it almost as an afterthought—"while you're parsing, suggest what roles this person would be good for."
+The "suitable roles" feature wasn't in the original plan. I added it almost as an afterthought "while you're parsing, suggest what roles this person would be good for."
 
 The results were genuinely useful.
 
@@ -124,62 +121,56 @@ That's the kind of insight that takes a human recruiter 15 minutes of careful re
 
 ---
 
-## The Rankings in Action
+## The rankings in action
 
 *[Screenshot: Ranking results table]*
 
-Each candidate gets:
-- **Overall score**: Weighted combination of factors
-- **Skill match score**: Technical fit
-- **Experience match score**: Background relevance
-- **Summary**: Plain-English explanation of the ranking
+Each candidate gets an overall score, a skill match score, an experience match score, and a plain-English summary explaining the ranking.
 
-No black box. You can see why someone ranked where they did.
+No black box. You can see exactly why someone placed where they did.
 
 ---
 
-## For Recruiters: What This Means
+## For recruiters
 
-You're not being replaced. You're being augmented.
+You're not being replaced you're getting a faster first pass.
 
-AI handles the first pass—parsing, scoring, ranking. You still make the final calls. But instead of spending days filtering 200 resumes down to 20, you spend 30 minutes reviewing the AI's top 20 with context on *why* they ranked high.
+AI handles the initial filtering: parsing, scoring, ranking. You still make the final calls. But instead of spending days working through 200 resumes to find the 20 worth reading, you spend 30 minutes reviewing the AI's shortlist with actual reasoning attached.
 
-The suitable roles feature also enables talent pooling. Candidate applied for Role A but would be perfect for Role B? Now you know before you pass on them.
-
-Time savings: Days of scanning → minutes of filtering.
+The suitable roles feature also opens up talent pooling. Candidate applied for Role A but would be a better fit for Role B? Now you know before you pass on them.
 
 ---
 
-## For Developers: Build This Yourself
+## For developers: build this yourself
 
 The architecture is straightforward to replicate:
 
-1. **Pick your LLM**: Bedrock, OpenAI, Anthropic API, or local models
-2. **Design your prompts**: This is the hard part—getting consistent structured output
-3. **Build the orchestration**: Lambda, containers, or simple scripts
-4. **Add a UI**: Razor Pages, React, or even a CLI
+1. Pick your LLM—Bedrock, OpenAI, Anthropic API, or local models
+2. Design your prompts. This is the hard part: getting consistent structured output takes more iteration than you'd expect
+3. Build the orchestration—Lambda, containers, or simple scripts
+4. Add a UI—Razor Pages, React, or even a CLI
 
-Tips from building this:
+A few things I learned the hard way:
 - **JSON mode** helps with structured output
-- **Few-shot examples** in prompts dramatically improve consistency
+- **Few-shot examples** in prompts dramatically improve consistency—more than system prompt instructions alone
 - **Validate outputs** before storing—LLMs occasionally return malformed JSON
 - **Keep prompts versioned**—you'll iterate on them constantly
 
 ---
 
-## A Note on How This Was Built
+## A note on how this was built
 
-The code for this project was written with AI assistance—specifically Claude via Claude Code. The architecture design, implementation, debugging, and even this article were collaborative efforts between human direction and AI execution.
+The code for this project was written with AI assistance specifically Claude via Claude Code. Architecture design, implementation, debugging, and this article were all collaborative: human direction, AI execution.
 
-It's a fitting meta-layer: an AI-powered tool for ranking resumes, built with AI-powered coding assistance.
+There's something a little strange about an AI-powered resume tool built with AI-powered coding assistance. I haven't fully decided how I feel about it.
 
 ---
 
-## Try It Yourself
+## Try it yourself
 
-The full source code is available on GitHub: **[github.com/skizha/ResumeRank](https://github.com/skizha/ResumeRank)**
+Full source code: **[github.com/skizha/ResumeRank](https://github.com/skizha/ResumeRank)**
 
-What's your experience with AI in hiring workflows? Already using it? Skeptical about the results? I'd like to hear what's working—or not—for your team.
+What's your experience with AI in hiring workflows? Already using it, or skeptical about where the errors show up? I'd like to hear what's actually working or not for your team.
 
 ---
 
