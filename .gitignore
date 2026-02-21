@@ -27,6 +27,9 @@ venv/
 .DS_Store
 Thumbs.db
 
+# Local app settings (do not commit real AWS URLs/keys)
+src/ResumeRank.Web/appsettings.Local.json
+
 # AWS/Terraform
 dist/
 *.tfstate

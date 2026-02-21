@@ -256,6 +256,8 @@ The application supports two modes configured via `AgentMode` in appsettings:
 }
 ```
 
+To keep your real API URL and bucket name out of the repo, copy `appsettings.Local.json.example` to `appsettings.Local.json`, fill in your values, and run the app. `appsettings.Local.json` is gitignored.
+
 ## Project Structure
 
 ```
