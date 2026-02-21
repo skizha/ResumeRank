@@ -1,0 +1,8 @@
+{
+  "AgentMode": "AWS",
+  "AWS": {
+    "Region": "us-east-1",
+    "ApiGatewayUrl": "https://YOUR_API_GATEWAY_ID.execute-api.us-east-1.amazonaws.com/dev",
+    "S3BucketName": "resumerank-resumes-dev-YOUR_ACCOUNT_ID"
+  }
+}

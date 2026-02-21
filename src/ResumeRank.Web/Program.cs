@@ -4,6 +4,7 @@ using ResumeRank.Web.Data;
 using ResumeRank.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
